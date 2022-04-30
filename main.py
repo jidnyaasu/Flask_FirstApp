@@ -65,6 +65,28 @@ def calc(expression=None):
         return f"<p>{expression} = {answer}</p>"
 
 
+@app.errorhandler(404)
+def not_found(e):
+    return '<!DOCTYPE html>' \
+           '<html lang="en">' \
+           '<head>' \
+           '<meta charset="UTF-8">' \
+           f'<title>Opps! {e} not found</title>' \
+           '<style>' \
+           'body {background-color: powderblue;}' \
+           'h3 {color: maroon;}' \
+           '.calc {color: red;}' \
+           '.sorry {color: green' \
+           '</style>' \
+           '</head>' \
+           '<body>' \
+           '<h3>Sorry, page not found.</h3>' \
+           '<p class="calc">If you were trying to use division function in calculator app, ' \
+           'please use "%" for division instead of "/"</p>' \
+           '<p class="sorry">Sorry for the inconvenience the app is still a work in progress.</p>' \
+           '</body></html>'
+
+
 @app.before_request
 def before_request():
     # in the g object lets store the current time
