@@ -41,6 +41,30 @@ def user(name=None):
     return jsonify({})
 
 
+# calculator app
+@app.route('/calc/')
+@app.route('/calc/<expression>')
+def calc(expression=None):
+    if expression is None:
+        return f'<p><b>Nothing to calculate</b></p>'
+    if '+' in expression:
+        expression_list = expression.split("+")
+        answer = int(expression_list[0]) + int(expression_list[1])
+        return f"<p>{expression} = {answer}</p>"
+    if '-' in expression:
+        expression_list = expression.split("-")
+        answer = int(expression_list[0]) - int(expression_list[1])
+        return f"<p>{expression} = {answer}</p>"
+    if '*' in expression:
+        expression_list = expression.split("*")
+        answer = int(expression_list[0]) * int(expression_list[1])
+        return f"<p>{expression} = {answer}</p>"
+    if '%' in expression:
+        expression_list = expression.split("%")
+        answer = int(expression_list[0]) / int(expression_list[1])
+        return f"<p>{expression} = {answer}</p>"
+
+
 @app.before_request
 def before_request():
     # in the g object lets store the current time
