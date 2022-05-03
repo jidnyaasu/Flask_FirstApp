@@ -24,16 +24,16 @@ users = []
 @app.route('/user/<name>', methods=["GET", "POST", "DELETE"])
 def user(name=None):
     if request.method == "GET":
-        # if name is given, lets send decorated response, otherwise return all users till now
+        # If name is given, lets send decorated response, otherwise return all users till now
         if name:
             return test(name)
         else:
             return jsonify(users)
-    elif request.method == "POST":
+    elif request.method == "POST" and name:
         # I am just adding name to the in memory db
         users.append(name)
     elif request.method == "DELETE":
-        # iif the name found iun the users, lets delete
+        # If the name found in the users, lets delete
         if name in users:
             users.remove(name)
     return jsonify({})
