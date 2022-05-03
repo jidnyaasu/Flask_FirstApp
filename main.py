@@ -13,7 +13,7 @@ def index():
 
 @app.route('/search')
 def search():
-    return '<h1>This is a new search engine</h1>'
+    return render_template('search_engine.html')
 
 
 # our temporary db
