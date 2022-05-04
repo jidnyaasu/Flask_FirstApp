@@ -1,0 +1,25 @@
+body {
+/* background-image: url("404.jpg");*/
+background-color: #cccccc;
+text-align: center;
+}
+
+h3 {
+color: maroon;
+}
+
+h1 {
+color: green;
+}
+
+.calc {
+color: red;
+}
+
+.sorry {
+color: green;
+}
+
+.error {
+color: blue;
+}
