@@ -8,7 +8,7 @@ app.config["secret"] = "10"
 
 @app.route('/')
 def index():
-    return '<h1>Hello World!</h1>'
+    return render_template('index.html')
 
 
 @app.route('/search')
@@ -65,7 +65,7 @@ def calc(expression=None):
 
 @app.errorhandler(404)
 def not_found(e):
-    return render_template('error.html', e=e)
+    return render_template('error.html', error=e, title="<p>Hello</p>", heading="<h1>Sorry, page not found.</h1>")
 
 
 @app.before_request
