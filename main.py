@@ -65,7 +65,7 @@ def calc(expression=None):
 
 @app.errorhandler(404)
 def not_found(e):
-    return render_template('error.html')
+    return render_template('error.html', e=e)
 
 
 @app.before_request

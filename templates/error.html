@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Oops! Page not found.</title>
+    <title>{{ e }}</title>
     <style>
         body {background-color: powderblue; text-align: center;}
         h3 {color: maroon;}
         h1 {color: green;}
         .calc {color: red;}
         .sorry {color: green;}
+        .error {color: blue;}
     </style>
 </head>
 <body>
@@ -16,5 +17,6 @@
 <p class="calc">If you were trying to use division function in calculator app,
     please use "%" for division instead of "/"</p>
 <p class="sorry">Sorry for the inconvenience the app is still a work in progress.</p>
+<p class="error">Error message: {{ e }}</p>
 </body>
 </html>
