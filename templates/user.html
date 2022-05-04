@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% if user %}
+            Hello, {{ user }}!
+        {% else %}
+            Hello, Stranger!
+        {% endif %}
+    </title>
+</head>
+<body>
+<h1>
+    {% if user %}
+        Hello, {{ user }}!<br>It's {{ date }} right now.
+    {% else %}
+        Hello, Stranger!
+    {% endif %}
+</h1>
+<ul>
+    {% for user in users %}
+        <li><b>{{ user }}</b></li>
+    {% endfor %}
+</ul>
+</body>
+</html>

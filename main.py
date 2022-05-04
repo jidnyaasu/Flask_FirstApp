@@ -1,6 +1,6 @@
 import time
 from flask import Flask, g, request, jsonify, render_template
-from routes import test
+from datetime import datetime
 
 app = Flask(__name__)
 app.config["secret"] = "10"
@@ -24,11 +24,12 @@ users = []
 @app.route('/user/<name>', methods=["GET", "POST", "DELETE"])
 def user(name=None):
     if request.method == "GET":
+        date = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
         # If name is given, lets send decorated response, otherwise return all users till now
         if name:
-            return test(name)
+            return render_template('user.html', user=name, date=date)
         else:
-            return jsonify(users)
+            return render_template('user.html', user=name, users=users)
     elif request.method == "POST" and name:
         # I am just adding name to the in memory db
         users.append(name)
@@ -37,30 +38,6 @@ def user(name=None):
         if name in users:
             users.remove(name)
     return jsonify({})
-
-
-# calculator app
-@app.route('/calc/')
-@app.route('/calc/<expression>')
-def calc(expression=None):
-    if expression is None:
-        return f'<p><b>Nothing to calculate</b></p>'
-    if '+' in expression:
-        expression_list = expression.split("+")
-        answer = int(expression_list[0]) + int(expression_list[1])
-        return f"<p>{expression} = {answer}</p>"
-    if '-' in expression:
-        expression_list = expression.split("-")
-        answer = int(expression_list[0]) - int(expression_list[1])
-        return f"<p>{expression} = {answer}</p>"
-    if '*' in expression:
-        expression_list = expression.split("*")
-        answer = int(expression_list[0]) * int(expression_list[1])
-        return f"<p>{expression} = {answer}</p>"
-    if '%' in expression:
-        expression_list = expression.split("%")
-        answer = int(expression_list[0]) / int(expression_list[1])
-        return f"<p>{expression} = {answer}</p>"
 
 
 @app.errorhandler(404)
