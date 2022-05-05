@@ -1,5 +1,12 @@
 {% extends "bootstrap/base.html" %}
 {% block title %}Index{% endblock %}
+
+{% block javascript %}
+
+    <script type="text/javascript" src="{{ url_for('static',filename='my-script.js') }}"></script>
+
+{% endblock %}
+
 {% block head %}
     {{ super() }}
     <style>
