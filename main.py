@@ -2,9 +2,11 @@ import time
 from flask import Flask, g, request, jsonify, render_template
 from datetime import datetime
 
+from flask_bootstrap import Bootstrap
+
 app = Flask(__name__)
 app.config["secret"] = "10"
-
+bootstrap = Bootstrap(app)
 
 @app.route('/')
 def index():
