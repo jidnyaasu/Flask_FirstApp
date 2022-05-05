@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config["secret"] = "10"
 bootstrap = Bootstrap(app)
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -44,7 +45,7 @@ def user(name=None):
 
 @app.errorhandler(404)
 def not_found(e):
-    return render_template('error.html', error=e, title="<p>Hello</p>", heading="<h1>Sorry, page not found.</h1>")
+    return render_template('error.html', error=e, title="Sorry 404", heading="<h1>Sorry, page not found.</h1>")
 
 
 @app.before_request

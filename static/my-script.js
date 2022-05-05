@@ -1,1 +1,1 @@
-console.log("Myscript called")
+console.log("My-script called")
