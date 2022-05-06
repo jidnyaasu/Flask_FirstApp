@@ -3,15 +3,17 @@ from flask import Flask, g, request, jsonify, render_template
 from datetime import datetime
 
 from flask_bootstrap import Bootstrap
+from flask_moment import Moment
 
 app = Flask(__name__)
 app.config["secret"] = "10"
 bootstrap = Bootstrap(app)
+moment = Moment(app)
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', current_time=datetime.utcnow())
 
 
 @app.route('/search')
