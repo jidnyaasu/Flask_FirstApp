@@ -35,7 +35,8 @@ def user(name=None):
             return render_template('user.html', user=name, users=users)
     elif request.method == "POST" and name:
         # I am just adding name to the in memory db
-        users.append(name)
+        if name not in users:
+            users.append(name)
     elif request.method == "DELETE":
         # If the name found in the users, lets delete
         if name in users:
@@ -45,7 +46,7 @@ def user(name=None):
 
 @app.errorhandler(404)
 def not_found(e):
-    return render_template('error.html', error=e, title="Sorry 404", heading="<h1>Sorry, page not found.</h1>")
+    return render_template('error.html', error=e, title="404 Not Found", heading="<h1>Sorry, page not found.</h1>")
 
 
 @app.before_request
