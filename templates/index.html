@@ -4,7 +4,7 @@
 {% block head %}
     {{ super() }}
     {% block scripts %}
-        <script type="text/javascript" src="static/my-script.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='my-script.js') }}"></script>
     {% endblock %}
 {% endblock %}
 
