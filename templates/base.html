@@ -1,6 +1,6 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title  %}Social_App{% endblock %}
+{% block title %}Social_App{% endblock %}
 
 {% block head %}
 {{ super() }}
@@ -32,7 +32,7 @@
 
 {% block content %}
 <div class="container">
-    {% black page_content %}{% endblock %}
+    {% block page_content %}{% endblock %}
 </div>
 {% endblock %}
 

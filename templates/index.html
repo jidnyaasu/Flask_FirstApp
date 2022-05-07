@@ -2,15 +2,12 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% block title %}Social_App{% endblock %}
 
-{% block head %}
-    {% block scripts %}
-    {{ super() }}
-        <script type="text/javascript" src="{{ url_for('static', filename='my-script.js') }}"></script>
-    {% endblock %}
-{% endblock %}
-
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello, {% if name %}{{ name }}{{% else %}}Stranger{% endif %}!</h1>
+    <h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{ url_for('static', filename='my-script.js') }}"></script>
 {% endblock %}
