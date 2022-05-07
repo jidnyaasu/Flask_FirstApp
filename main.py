@@ -2,13 +2,18 @@ import time
 from flask import Flask, g, request, jsonify, render_template
 from datetime import datetime
 
+from flask_bootstrap import Bootstrap
+from flask_moment import Moment
+
 app = Flask(__name__)
 app.config["secret"] = "10"
+bootstrap = Bootstrap(app)
+moment = Moment(app)
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', current_time=datetime.utcnow())
 
 
 @app.route('/search')
@@ -32,7 +37,8 @@ def user(name=None):
             return render_template('user.html', user=name, users=users)
     elif request.method == "POST" and name:
         # I am just adding name to the in memory db
-        users.append(name)
+        if name not in users:
+            users.append(name)
     elif request.method == "DELETE":
         # If the name found in the users, lets delete
         if name in users:
@@ -42,7 +48,7 @@ def user(name=None):
 
 @app.errorhandler(404)
 def not_found(e):
-    return render_template('error.html', error=e, title="<p>Hello</p>", heading="<h1>Sorry, page not found.</h1>")
+    return render_template('error.html', error=e, title="404 Not Found", heading="<h1>Sorry, page not found.</h1>")
 
 
 @app.before_request
