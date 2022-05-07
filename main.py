@@ -14,9 +14,6 @@ moment = Moment(app)
 
 class NameForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
-    password = PasswordField("Enter your password")
-    hidden = HiddenField("Text entered here will be hidden")
-    gender = RadioField("Male", "Female")
     submit = SubmitField("Submit")
 
 
@@ -28,7 +25,11 @@ def not_found(e):
 @app.route('/', methods=["GET", "POST"])
 def index():
     name = None
-    return render_template('index.html')
+    form = NameForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ''
+    return render_template('index.html', form=form, name=name)
 
 
 @app.route('/search')
