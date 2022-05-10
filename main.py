@@ -17,6 +17,11 @@ class NameForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
+class SearchForm(FlaskForm):
+    search = StringField(render_kw={"placeholder": "Search anything"})
+    submit = SubmitField("Search")
+
+
 @app.errorhandler(404)
 def not_found(e):
     return render_template('error.html', error=e), 404
@@ -35,9 +40,15 @@ def index():
     return render_template('index.html', form=form, name=session.get('name'))
 
 
-@app.route('/search')
+@app.route('/search', methods=["GET", "POST"])
 def search():
-    return render_template('search_engine.html')
+    form = SearchForm()
+    if form.validate_on_submit():
+        if form.search.data:
+            search_url = "https://www.google.com/search?q=" + form.search.data.replace(" ", "+")
+            return redirect(search_url)
+        return redirect(url_for('search'))
+    return render_template('search_engine.html', form=form)
 
 
 if __name__ == '__main__':
