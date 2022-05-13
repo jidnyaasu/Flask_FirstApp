@@ -1,12 +1,13 @@
 import os
 
-from flask import Flask, render_template, session, redirect, url_for, flash
+from flask import Flask, render_template, session, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -18,6 +19,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
+migrate = Migrate(app, db)
 
 
 class NameForm(FlaskForm):
@@ -50,6 +52,11 @@ class User(db.Model):
         return f'<User {self.username}'
 
 
+@app.shell_context_processor
+def make_shell_contex():
+    return dict(db=db, User=User, Role=Role)
+
+
 @app.errorhandler(404)
 def not_found(e):
     return render_template('error.html', error=e), 404
@@ -77,7 +84,10 @@ def index():
 def search():
     form = SearchForm()
     if form.validate_on_submit():
-        if form.search.data:
+        if "social" in (form.search.data.lower().strip().split(" "))\
+                and "app" in (form.search.data.lower().strip().split(" ")):
+            return redirect(url_for('index'))
+        elif form.search.data:
             search_url = "https://www.google.com/search?q=" + form.search.data.replace(" ", "+")
             return redirect(search_url)
         return redirect(url_for('search'))
