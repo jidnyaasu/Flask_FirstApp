@@ -4,7 +4,7 @@ from flask import Flask, render_template, session, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -24,6 +24,7 @@ migrate = Migrate(app, db)
 
 class NameForm(FlaskForm):
     name = StringField("What is your name?", validators=[DataRequired()])
+    password = PasswordField("password", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 
@@ -46,6 +47,7 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
+    password = db.Column(db.String(64))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __repr__(self):
@@ -68,16 +70,22 @@ def index():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.name.data).first()
         if user is None:
-            user = User(username=form.name.data)
+            user = User(username=form.name.data, password=form.password.data)
             db.session.add(user)
             db.session.commit()
             session['known'] = False
+        elif user.password is None:
+            user.password = form.password.data
+            db.session.commit()
+            session['known'] = True
         else:
             session['known'] = True
         session['name'] = form.name.data
+        session['password'] = form.password.data
         form.name.data = ''
         return redirect(url_for('index'))
-    return render_template('index.html', form=form, name=session.get('name'), known=session.get('known', False))
+    return render_template('index.html', form=form, name=session.get('name'),
+                           password=session.get('password'), known=session.get('known', False))
 
 
 @app.route('/search', methods=["GET", "POST"])
