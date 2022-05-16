@@ -1,7 +1,11 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+/venv
 
 # Ignoring these folders
 __pycache__/
 .idea/
+
+# Ignoring database file
+data.sqlite
