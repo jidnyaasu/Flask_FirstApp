@@ -6,3 +6,6 @@
 # Ignoring these folders
 __pycache__/
 .idea/
+
+# Ignoring database file
+data.sqlite
