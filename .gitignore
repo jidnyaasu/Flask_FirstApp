@@ -8,4 +8,4 @@ __pycache__/
 .idea/
 
 # Ignoring database file
-data.sqlite
+/data.sqlite
