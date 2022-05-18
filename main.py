@@ -68,9 +68,10 @@ def not_found(e):
 def index():
     form = NameForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.name.data).first()
+        username = form.name.data.capitalize()
+        user = User.query.filter_by(username=username).first()
         if user is None:
-            user = User(username=form.name.data, password=form.password.data)
+            user = User(username=username, role_id=2, password=form.password.data)
             db.session.add(user)
             db.session.commit()
             session['known'] = False
@@ -80,7 +81,7 @@ def index():
             session['known'] = True
         else:
             session['known'] = True
-        session['name'] = form.name.data
+        session['name'] = username
         session['password'] = form.password.data
         form.name.data = ''
         return redirect(url_for('index'))
@@ -101,6 +102,8 @@ def search():
         return redirect(url_for('search'))
     return render_template('search_engine.html', form=form)
 
+
+db.create_all()
 
 if __name__ == '__main__':
     app.run(port=8000, debug=True)
