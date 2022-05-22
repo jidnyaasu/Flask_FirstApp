@@ -1,10 +1,11 @@
 from datetime import datetime
 from flask import render_template, session, redirect, url_for
 
-from main import send_email
+
 from . import main
 from .forms import NameForm, SearchForm
 from .. import db
+from ..email import send_email
 from ..models import User
 
 
