@@ -70,11 +70,6 @@ def make_shell_contex():
     return dict(db=db, User=User, Role=Role)
 
 
-@app.errorhandler(404)
-def not_found(e):
-    return render_template('error.html', error=e), 404
-
-
 @app.route('/', methods=["GET", "POST"])
 def index():
     form = NameForm()
