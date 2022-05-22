@@ -8,7 +8,7 @@ from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -31,17 +31,6 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 migrate = Migrate(app, db)
 mail = Mail(app)
-
-
-class NameForm(FlaskForm):
-    name = StringField("What is your name?", validators=[DataRequired()])
-    password = PasswordField("password", validators=[DataRequired()])
-    submit = SubmitField("Submit")
-
-
-class SearchForm(FlaskForm):
-    search = StringField(render_kw={"placeholder": "Search anything"})
-    submit = SubmitField("Search")
 
 
 class Role(db.Model):
@@ -70,45 +59,7 @@ def make_shell_contex():
     return dict(db=db, User=User, Role=Role)
 
 
-@app.route('/', methods=["GET", "POST"])
-def index():
-    form = NameForm()
-    if form.validate_on_submit():
-        username = form.name.data.capitalize()
-        user = User.query.filter_by(username=username).first()
-        if user is None:
-            user = User(username=username, role_id=2, password=form.password.data)
-            db.session.add(user)
-            db.session.commit()
-            session['known'] = False
-            if app.config["SOCIAL_APP_ADMIN"]:
-                send_email(app.config["SOCIAL_APP_ADMIN"], 'New User', 'mail/new_user', user=user)
-        elif user.password is None:
-            user.password = form.password.data
-            db.session.commit()
-            session['known'] = True
-        else:
-            session['known'] = True
-        session['name'] = username
-        session['password'] = form.password.data
-        form.name.data = ''
-        return redirect(url_for('index'))
-    return render_template('index.html', form=form, name=session.get('name'),
-                           password=session.get('password'), known=session.get('known', False))
 
-
-@app.route('/search', methods=["GET", "POST"])
-def search():
-    form = SearchForm()
-    if form.validate_on_submit():
-        if "social" in (form.search.data.lower().strip().split(" ")) \
-                and "app" in (form.search.data.lower().strip().split(" ")):
-            return redirect(url_for('index'))
-        elif form.search.data:
-            search_url = "https://www.google.com/search?q=" + form.search.data.replace(" ", "+")
-            return redirect(search_url)
-        return redirect(url_for('search'))
-    return render_template('search_engine.html', form=form)
 
 
 def send_async_email(msg):
