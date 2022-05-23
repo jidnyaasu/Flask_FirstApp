@@ -1,12 +1,9 @@
-from datetime import datetime
-from flask import render_template, session, redirect, url_for
-
-
+from flask import render_template, session, redirect, url_for, current_app
+from .. import db
+from ..models import User
+from ..email import send_email
 from . import main
 from .forms import NameForm, SearchForm
-from .. import db
-from ..email import send_email
-from ..models import User
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -20,15 +17,15 @@ def index():
             db.session.add(user)
             db.session.commit()
             session['known'] = False
-            if main.config["SOCIAL_APP_ADMIN"]:
-                send_email(main.config["SOCIAL_APP_ADMIN"], 'New User', 'mail/new_user', user=user)
+            if current_app.config["SOCIAL_APP_ADMIN"]:
+                send_email(current_app.config["SOCIAL_APP_ADMIN"], 'New User', 'mail/new_user', user=user)
         else:
             session['known'] = True
         session['name'] = username
         form.name.data = ''
         return redirect(url_for('.index'))
     return render_template('index.html', form=form, name=session.get('name'),
-                           known=session.get('known', False), curret_time=datetime.utcnow())
+                           known=session.get('known', False))
 
 
 @main.route('/search', methods=["GET", "POST"])
