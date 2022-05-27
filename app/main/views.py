@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for, current_app
+from flask import render_template, session, redirect, url_for, current_app, flash
 
 from . import main
 from .forms import NameForm, SearchForm
@@ -19,9 +19,11 @@ def index():
             db.session.commit()
             session['known'] = False
             if current_app.config["SOCIAL_APP_ADMIN"]:
+                flash('New user added, email sent to admin')
                 send_email(current_app.config["SOCIAL_APP_ADMIN"], 'New User', 'mail/new_user', user=user)
         else:
             session['known'] = True
+            flash(f'Welcome back {username}')
         session['name'] = username
         form.name.data = ''
         return redirect(url_for('.index'))
