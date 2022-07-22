@@ -12,7 +12,7 @@ class Config:
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
     MAIL_SUBJECT_PREFIX = '[Social App]'
     SOCIAL_APP_MAIL_SENDER = f'Social App {MAIL_USERNAME}'
-    SOCIAL_APP_ADMIN = os.getenv("SOCIAL_APP_ADMIN")
+    SOCIAL_APP_ADMIN = os.getenv('SOCIAL_APP_ADMIN')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     @staticmethod
