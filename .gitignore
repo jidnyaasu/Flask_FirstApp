@@ -2,6 +2,7 @@
 /shelf/
 /workspace.xml
 /venv
+.flaskenv
 
 # Ignoring these folders
 __pycache__/
